@@ -4,54 +4,58 @@ using UnityEngine;
 
 public class PlaneController : MonoBehaviour
 {
-    public float thrustSpeed = 50.0f;
-    public float bankSpeed = 45.0f;
-    public float pitchSpeed = 30.0f;
-    public float rollSpeed = 60.0f;
+    public float throttleIncrement = 0.1f;
+    public float maxThrust = 50f;
+    public float responsiveness = 10f;
+
+    private float roll = 0f;
+    private float pitch = 0f;
+    private float yaw = 0f;
+
+    private float throttle = 0f;
+
+    private float responseModifier 
+    { 
+        get 
+        { 
+            return rb.mass / 10f * responsiveness; 
+        }
+    }
 
     private Rigidbody rb;
 
-    void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    void FixedUpdate()
+    private void Update() 
     {
-        // Thrust
-        if (Input.GetKey(KeyCode.W))
+        roll = Input.GetAxis("Roll");
+        pitch = -Input.GetAxis("Pitch");
+        yaw = Input.GetAxis("Yaw");
+
+        if (Input.GetKey(KeyCode.Space))
         {
-            rb.AddForce(transform.forward * thrustSpeed);
+            throttle += throttleIncrement;
         }
 
-        // Bank (Left and Right)
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.R))
         {
-            rb.AddTorque(Vector3.down * bankSpeed);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            rb.AddTorque(Vector3.up * bankSpeed);
+            throttle -= throttleIncrement;
         }
 
-        // Pitch (Up and Down)
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            rb.AddTorque(Vector3.left * pitchSpeed);
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            rb.AddTorque(Vector3.right * pitchSpeed);
-        }
+        throttle = Mathf.Clamp(throttle, 0f, 1f);
+    }
 
-        // Roll (Roll Left and Roll Right)
-        if (Input.GetKey(KeyCode.Q))
-        {
-            rb.AddTorque(Vector3.back * rollSpeed);
-        }
-        else if (Input.GetKey(KeyCode.E))
-        {
-            rb.AddTorque(Vector3.forward * rollSpeed);
-        }
+    private void FixedUpdate()
+    {
+        float thrust = maxThrust * throttle;
+        
+        rb.AddForce(transform.forward * thrust);
+        
+        rb.AddTorque(transform.up * yaw * responseModifier);
+        rb.AddTorque(transform.right * pitch * responseModifier);
+        rb.AddTorque(-transform.forward * roll * responseModifier);
     }
 }

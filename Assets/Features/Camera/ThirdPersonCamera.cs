@@ -2,31 +2,43 @@ using UnityEngine;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
-    public Transform target;  // Target to follow (your airplane)
-    public Vector3 offset;  // Offset from the target
-    public float smoothTime = 0.3f;  // Time to smooth position
-    public float rotationSmoothTime = 0.3f;  // Time to smooth rotation
+    public Transform target;
 
-    private Vector3 velocity;  // Velocity for SmoothDamp
+    /// <summary>
+    /// How far off the camera should aim to be from the target.
+    /// </summary>
+    public Vector3 offset;
 
-    void FixedUpdate()
+    /// <summary>
+    /// How far off the camera should look from the target.
+    /// </summary>
+    public Vector3 lookOffset;
+
+    public float followSpeed = 10;
+    public float lookSpeed = 10;
+
+    private Vector3 upVector = Vector3.up;
+
+    private void FixedUpdate()
     {
-        // Compute desired position in world coordinates based on target's local coordinate
-        Vector3 desiredPosition = target.TransformPoint(offset);
+        UpdatePosition();
+        UpdateRotation();
+    }
 
-        // Smoothly move to the desired position
-        Vector3 smoothedPosition = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
+    private void UpdatePosition() 
+    {
+        Vector3 desiredPosition = target.position + target.forward * offset.z + target.up * offset.y;
+        transform.position = Vector3.MoveTowards(transform.position, desiredPosition, Time.deltaTime * followSpeed);
+    }
 
-        // Update the position
-        transform.position = smoothedPosition;
+    private void UpdateRotation()
+    {
+        Vector3 directionToTarget = target.position - transform.position + target.up * lookOffset.y;
 
-        // Compute desired rotation
-        Quaternion desiredRotation = Quaternion.LookRotation(target.position - transform.position, target.forward);
+        // this is needed to avoid gimbal lock problems
+        upVector = Vector3.Slerp(upVector, target.up, Time.deltaTime * lookSpeed);
 
-        // Smoothly rotate to the desired rotation
-        Quaternion smoothedRotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSmoothTime);
-
-        // Update the rotation
-        transform.rotation = smoothedRotation;
+        Quaternion desiredRotation = Quaternion.LookRotation(directionToTarget, upVector);
+        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * lookSpeed);
     }
 }
