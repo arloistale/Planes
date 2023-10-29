@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlaneController : MonoBehaviour
 {
-    public float throttleIncrement = 0.1f;
     public float maxThrust = 50f;
     public float responsiveness = 10f;
 
@@ -12,7 +11,7 @@ public class PlaneController : MonoBehaviour
     private float pitch = 0f;
     private float yaw = 0f;
 
-    private float throttle = 0f;
+    private float thrust = 0f;
 
     private float responseModifier 
     { 
@@ -29,29 +28,28 @@ public class PlaneController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Update() 
+    public void SetThrottle(float throttleValue)
     {
-        roll = Input.GetAxis("Roll");
-        pitch = -Input.GetAxis("Pitch");
-        yaw = Input.GetAxis("Yaw");
+        thrust = maxThrust * throttleValue;
+    }
 
-        if (Input.GetKey(KeyCode.Space))
-        {
-            throttle += throttleIncrement;
-        }
+    public void SetRoll(float value)
+    {
+        roll = value;
+    }
 
-        if (Input.GetKey(KeyCode.R))
-        {
-            throttle -= throttleIncrement;
-        }
+    public void SetPitch(float value)
+    {
+        pitch = value;
+    }
 
-        throttle = Mathf.Clamp(throttle, 0f, 1f);
+    public void SetYaw(float value)
+    {
+        yaw = value;
     }
 
     private void FixedUpdate()
     {
-        float thrust = maxThrust * throttle;
-        
         rb.AddForce(transform.forward * thrust);
         
         rb.AddTorque(transform.up * yaw * responseModifier);
