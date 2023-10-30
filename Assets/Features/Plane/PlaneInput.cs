@@ -27,7 +27,7 @@ public class PlaneInput : MonoBehaviour
             throttle -= throttleIncrement;
         }
 
-        throttle = Mathf.Clamp(throttle, 0f, 1f);
+        throttle = Mathf.Clamp01(throttle);
 
         // set plane
         plane.SetRoll(roll);

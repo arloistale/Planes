@@ -23,6 +23,11 @@ public class PlaneController : MonoBehaviour
 
     private Rigidbody rb;
 
+    public Vector3 GetVelocity()
+    {
+        return rb.velocity;
+    }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
