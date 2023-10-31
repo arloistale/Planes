@@ -16,12 +16,7 @@ public class Asteroid : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Start()
-    {
-        Push();
-    }
-
-    private void Push()
+    public void Push()
     {
         // Generate random force and apply it for movement
         Vector3 randomForce = new Vector3(
@@ -40,5 +35,24 @@ public class Asteroid : MonoBehaviour
         ).normalized * Random.Range(minTorque, maxTorque);
 
         rb.AddTorque(randomTorque, ForceMode.Impulse);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Destructive"))
+        {
+            Explode();
+        }
+    }
+
+    private void Explode()
+    {
+        Destroy(gameObject);
+
+        for (int i = 0; i < 3; i++)
+        {
+            Asteroid chunk = Instantiate(this, transform.position, Quaternion.identity);
+            chunk.Push();
+        }
     }
 }

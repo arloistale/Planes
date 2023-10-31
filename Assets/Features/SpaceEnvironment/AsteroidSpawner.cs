@@ -24,6 +24,7 @@ public class AsteroidSpawner : MonoBehaviour
             // Instantiate the asteroid at the randomPosition
             Asteroid asteroid = Instantiate(asteroidPrefab, randomPosition, Quaternion.identity);
             asteroid.transform.SetParent(transform);
+            asteroid.Push();
         }
     }
 }

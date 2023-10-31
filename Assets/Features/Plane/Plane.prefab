@@ -5326,6 +5326,7 @@ GameObject:
   - component: {fileID: 7438453299235941920}
   - component: {fileID: 2696039166513449120}
   - component: {fileID: 6863826433623213845}
+  - component: {fileID: 2279341288821969219}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -5435,6 +5436,21 @@ MonoBehaviour:
   engineParticles:
   - {fileID: 3256853949862133621}
   - {fileID: 7972694243989726022}
+--- !u!114 &2279341288821969219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3625183907119935281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d52e91ae8dcc4dd082df028f8679109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missilePrefab: {fileID: 7428555550980881054, guid: cee1296835d82467f920f785115d0d24, type: 3}
+  missileSpeed: 50
+  missileLifetime: 10
 --- !u!1 &4075459266794774432
 GameObject:
   m_ObjectHideFlags: 0
