@@ -197,3 +197,5 @@ MonoBehaviour:
   maxForce: 20
   minTorque: 10
   maxTorque: 50
+  explosionPrefab: {fileID: 4625372040891451893, guid: f47e95de342f64a339ef92421ff5e3f7, type: 3}
+  explosionSound: {fileID: 8300000, guid: 5898d45fc1fa34df483a167dee9bc234, type: 3}

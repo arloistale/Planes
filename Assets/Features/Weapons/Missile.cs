@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
-    public float lifetime = 5f; // Time after which the missile will be destroyed
+    public float lifetime = 5f; 
 
     private float speed;
 
@@ -19,6 +19,6 @@ public class Missile : MonoBehaviour
     private void Update()
     {
         float moveDistance = speed * Time.deltaTime;
-        transform.Translate(transform.forward * moveDistance);
+        transform.position += transform.forward * moveDistance;
     }
 }

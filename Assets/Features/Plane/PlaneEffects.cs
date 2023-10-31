@@ -16,7 +16,10 @@ public class PlaneEffects : MonoBehaviour
     [SerializeField]
     private ParticleSystem[] engineParticles;
 
-    float maxParticlesRateOverTime;
+    [SerializeField]
+    private AudioSource engineAudio;
+
+    private float maxParticlesRateOverTime;
 
     private void Awake()
     {
@@ -32,6 +35,28 @@ public class PlaneEffects : MonoBehaviour
     }
 
     private void Update()
+    {
+        UpdateAudio();
+        UpdateVisuals();
+    }
+
+    private void UpdateAudio()
+    {
+        float throttle = plane.Throttle;
+
+        if (throttle > 0 && !engineAudio.isPlaying)
+        {
+            engineAudio.Play();
+        }
+        else if (throttle <= 0 && engineAudio.isPlaying)
+        {
+            engineAudio.Stop();
+        }
+
+        engineAudio.volume = throttle;
+    }
+
+    private void UpdateVisuals()
     {
         float throttle = plane.Throttle;
 

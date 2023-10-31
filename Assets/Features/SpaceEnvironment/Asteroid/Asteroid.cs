@@ -9,6 +9,10 @@ public class Asteroid : MonoBehaviour
     public float minTorque = 10f;
     public float maxTorque = 50f;
 
+    public GameObject explosionPrefab;
+
+    public AudioClip explosionSound;
+
     private Rigidbody rb;
 
     private void Awake()
@@ -41,18 +45,17 @@ public class Asteroid : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Destructive"))
         {
+            AudioSource.PlayClipAtPoint(explosionSound, transform.position);
+            Destroy(other.gameObject);
             Explode();
         }
     }
 
     private void Explode()
     {
-        Destroy(gameObject);
+        var explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Destroy(explosion, 1.1f);
 
-        for (int i = 0; i < 3; i++)
-        {
-            Asteroid chunk = Instantiate(this, transform.position, Quaternion.identity);
-            chunk.Push();
-        }
+        Destroy(gameObject);
     }
 }
