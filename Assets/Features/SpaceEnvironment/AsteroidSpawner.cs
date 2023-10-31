@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour
 {
-    public GameObject asteroidPrefab; // Drag your Asteroid prefab here
-    public int numberOfAsteroids = 10; // Number of asteroids you want to spawn
-    public float spawnRadius = 10.0f; // Radius in which asteroids will be spawned
+    public Asteroid asteroidPrefab; 
+    public int numberOfAsteroids = 10; 
+    public float spawnRadius = 10.0f;
 
     void Start()
     {
@@ -22,7 +22,8 @@ public class AsteroidSpawner : MonoBehaviour
             randomPosition += transform.position;
 
             // Instantiate the asteroid at the randomPosition
-            Instantiate(asteroidPrefab, randomPosition, Quaternion.identity);
+            Asteroid asteroid = Instantiate(asteroidPrefab, randomPosition, Quaternion.identity);
+            asteroid.transform.SetParent(transform);
         }
     }
 }

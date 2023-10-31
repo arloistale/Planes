@@ -18,32 +18,62 @@ public class PlaneAI : MonoBehaviour
     /// </summary>
     public float steeringCoefficient = 0.1f;
 
+    /// <summary>
+    /// How far out the plane looks for obstacles.
+    /// </summary>
+    public float obstacleAvoidanceDistance = 20f;
+
+    /// <summary>
+    /// The layer on which the plane raycasts for obstacles.
+    /// </summary>
+    public LayerMask obstacleLayer; 
+
     private void Update()
     {
-        FollowPlayer();
-    }
+        Vector3 target = targetPlane.transform.position;
+        target = ObstacleAvoidance(target);
 
-    private void FollowPlayer()
-    {
-        Vector3 toTarget = targetPlane.transform.position - plane.transform.position;
+        Debug.DrawLine(plane.transform.position, target, Color.magenta);
+
+        Vector3 toTarget = target - plane.transform.position;
+
         AdjustThrottle(toTarget);
         SteerTowardsPlayer(toTarget);
+    }
+    private Vector3 ObstacleAvoidance(Vector3 target)
+    {
+        RaycastHit hit;
+
+        Debug.DrawRay(plane.transform.position, plane.transform.forward * obstacleAvoidanceDistance, Color.red);
+
+        if (Physics.Raycast(plane.transform.position, plane.transform.forward, out hit, obstacleAvoidanceDistance, obstacleLayer))
+        {
+            if (hit.collider.tag != "Player")
+            {
+                target = plane.transform.position + (plane.transform.position - hit.point).normalized * 50f;
+            }
+        }
+
+        return target;
     }
 
     private void AdjustThrottle(Vector3 toTarget)
     {
         float distanceToTarget = toTarget.magnitude;
 
-        // slow down, speed up based on how close to target
-        float value = (distanceToTarget - followDistance) / 5f;
-        float throttle = Mathf.Clamp01(value);
-  
+        if (distanceToTarget < followDistance) {
+            plane.SetThrottle(0);
+            return;
+        }
+
+        float distanceDelta = distanceToTarget - followDistance;
+        float throttle = Mathf.Clamp01(1 - Mathf.Exp(-distanceDelta * 0.2f));
+
         plane.SetThrottle(throttle);
     }
 
     private void SteerTowardsPlayer(Vector3 toTarget)
     {
-        float distanceToTarget = toTarget.magnitude;
         Vector3 directionToTarget = toTarget.normalized;
 
         // Calculate the differences in all axes and respond by steering
@@ -59,5 +89,4 @@ public class PlaneAI : MonoBehaviour
         plane.SetPitch(deltaPitch);
         plane.SetRoll(deltaRoll);
     }
-
 }

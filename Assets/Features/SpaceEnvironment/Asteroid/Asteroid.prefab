@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3475163142805946341}
   - component: {fileID: 2984646255924796065}
   - component: {fileID: 4238751737132013527}
+  - component: {fileID: 6280287888328281527}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -61,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 58e7a57b4366b4564bd3e6aff936e4b8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,6 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6280287888328281527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6828606520542091826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec058762cf4a94110b641238d080bb4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  noiseScale: 2.38
+  deformationAmount: 2.54
 --- !u!1 &9117938756152890219
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,6 +108,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1410200974600256123}
   - component: {fileID: 3255613371890222105}
+  - component: {fileID: 7847702947670810887}
+  - component: {fileID: -364833206808334932}
   m_Layer: 0
   m_Name: Asteroid
   m_TagString: Untagged
@@ -135,5 +152,48 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 5
+  m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &7847702947670810887
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9117938756152890219}
+  serializedVersion: 4
+  m_Mass: 2
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &-364833206808334932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9117938756152890219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5430022826324ac3a7f576336f635c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minForce: 5
+  maxForce: 20
+  minTorque: 10
+  maxTorque: 50

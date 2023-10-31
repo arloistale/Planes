@@ -1,17 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 
 public class PlaneController : MonoBehaviour
 {
     public float maxThrust = 50f;
     public float responsiveness = 10f;
 
+    [SerializeField]
+    private bool isMain = false;
+
+    public bool IsMain
+    {
+        get
+        {
+            return isMain;
+        }
+    }
+
     private float roll = 0f;
     private float pitch = 0f;
     private float yaw = 0f;
 
-    private float thrust = 0f;
+    private float throttle = 0f;
+
+    public float Throttle
+    {
+        get
+        {
+            return throttle;
+        }
+    }
 
     private float responseModifier 
     { 
@@ -33,9 +53,9 @@ public class PlaneController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    public void SetThrottle(float throttleValue)
+    public void SetThrottle(float value)
     {
-        thrust = maxThrust * throttleValue;
+        throttle = value;
     }
 
     public void SetRoll(float value)
@@ -55,6 +75,7 @@ public class PlaneController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        float thrust = maxThrust * throttle;
         rb.AddForce(transform.forward * thrust);
         
         rb.AddTorque(transform.up * yaw * responseModifier);
